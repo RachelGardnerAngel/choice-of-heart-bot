@@ -1,0 +1,40 @@
+# Виртуальное окружение
+venv/
+env/
+ENV/
+.venv/
+
+# Файлы с секретами
+.env
+.env.local
+.env.*
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Системные файлы Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Логи (мы их будем создавать)
+logs/
+*.log
+
+# Базы данных (локально)
+*.db
+*.sqlite3
+
+# Временные файлы
+tmp/
+temp/
