@@ -4,9 +4,9 @@ from aiogram.types import Message
 
 from utils.texts import (
     SUBGENRE_BUTTON_YAOI, SUBGENRE_BUTTON_YURI, SUBGENRE_BUTTON_GET,
-    SUBGENRE_PLACEHOLDER
+    SUBGENRE_PLACEHOLDER, BACK_BUTTON
 )
-from keyboards.reply_kb import get_main_keyboard
+from keyboards.reply_kb import get_category_keyboard  # возвращаем в категорию, а не в главное меню
 from utils.logger import logger
 
 router = Router()
@@ -19,7 +19,7 @@ async def show_yaoi_subgenres(message: Message):
     
     await message.answer(
         text=SUBGENRE_PLACEHOLDER,
-        reply_markup=get_main_keyboard(),  # возвращаем главное меню
+        reply_markup=get_category_keyboard("yaoi"),  # возвращаем в категорию Яой, а не в главное меню
         parse_mode="HTML"
     )
 
@@ -31,7 +31,7 @@ async def show_yuri_subgenres(message: Message):
     
     await message.answer(
         text=SUBGENRE_PLACEHOLDER,
-        reply_markup=get_main_keyboard(),
+        reply_markup=get_category_keyboard("yuri"),  # возвращаем в категорию Юри
         parse_mode="HTML"
     )
 
@@ -43,6 +43,6 @@ async def show_get_subgenres(message: Message):
     
     await message.answer(
         text=SUBGENRE_PLACEHOLDER,
-        reply_markup=get_main_keyboard(),
+        reply_markup=get_category_keyboard("get"),  # возвращаем в категорию Гет
         parse_mode="HTML"
     )

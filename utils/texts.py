@@ -47,6 +47,16 @@ SUBGENRE_BUTTON_YAOI = "📚 К поджанрам Яой"
 SUBGENRE_BUTTON_YURI = "📚 К поджанрам Юри"
 SUBGENRE_BUTTON_GET = "📚 К поджанрам Гет"
 
+# Кнопка назад
+BACK_BUTTON = "◀️ Назад к выбору"
+
+# Сообщение при возврате в главное меню
+BACK_MESSAGE = """
+<b>Читатель</b>, ты вернулся на главную.
+
+Выбирай категорию, когда сердце отдохнёт и будет готово к новой истории. Они ждут тебя здесь, в тишине пиксельных миров.
+"""
+
 # Кнопки меню
 BUTTON_STATS = "📊 Моя статистика"
 BUTTON_DIARY = "📔 Дневник творца"
@@ -93,10 +103,8 @@ SUBGENRE_PLACEHOLDER = """
 А пока — возвращайся к выбору категорий. Сердце подскажет, куда идти.
 """
 
-# Путь к картинке для приветствия
+# Пути к картинкам
 WELCOME_IMAGE_PATH = "images/welcome.png"
-
-# Пути к картинкам для категорий
 CATEGORY_YAOI_IMAGE = "images/category_yaoi.png"
 CATEGORY_YURI_IMAGE = "images/category_yuri.png"
 CATEGORY_GET_IMAGE = "images/category_get.png"

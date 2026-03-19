@@ -5,7 +5,8 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from utils.texts import (
     CATEGORY_YAOI, CATEGORY_YURI, CATEGORY_GET,
     BUTTON_STATS, BUTTON_DIARY, BUTTON_SUBSCRIBE,
-    SUBGENRE_BUTTON_YAOI, SUBGENRE_BUTTON_YURI, SUBGENRE_BUTTON_GET
+    SUBGENRE_BUTTON_YAOI, SUBGENRE_BUTTON_YURI, SUBGENRE_BUTTON_GET,
+    BACK_BUTTON
 )
 
 def get_main_keyboard() -> ReplyKeyboardMarkup:
@@ -34,10 +35,11 @@ def get_main_keyboard() -> ReplyKeyboardMarkup:
     
     return keyboard
 
-def get_subgenre_keyboard(category: str) -> ReplyKeyboardMarkup:
+def get_category_keyboard(category: str) -> ReplyKeyboardMarkup:
     """
-    Создает клавиатуру с кнопкой для поджанров конкретной категории
-    и главным меню внизу
+    Создает клавиатуру для конкретной категории:
+    - кнопка к поджанрам
+    - кнопка назад в главное меню
     """
     builder = ReplyKeyboardBuilder()
     
@@ -49,20 +51,12 @@ def get_subgenre_keyboard(category: str) -> ReplyKeyboardMarkup:
     elif category == "get":
         builder.row(KeyboardButton(text=SUBGENRE_BUTTON_GET))
     
-    # Добавляем кнопки главного меню
-    builder.row(
-        KeyboardButton(text=CATEGORY_YAOI),
-        KeyboardButton(text=CATEGORY_YURI),
-        KeyboardButton(text=CATEGORY_GET),
-        width=3
-    )
-    builder.row(KeyboardButton(text=BUTTON_STATS))
-    builder.row(KeyboardButton(text=BUTTON_DIARY))
-    builder.row(KeyboardButton(text=BUTTON_SUBSCRIBE))
+    # Добавляем кнопку назад
+    builder.row(KeyboardButton(text=BACK_BUTTON))
     
     keyboard = builder.as_markup(
         resize_keyboard=True,
-        input_field_placeholder="Выбери поджанр или вернись к категориям..."
+        input_field_placeholder="Выбери поджанр или вернись назад..."
     )
     
     return keyboard

@@ -18,7 +18,7 @@ from utils.logger import logger
 time.sleep(7)
 
 # Подключаем все обработчики
-from handlers import start, menu, categories, subgenres
+from handlers import start, menu, categories, subgenres, navigation
 
 # Создаем объекты бота и диспетчера
 bot = Bot(
@@ -33,6 +33,7 @@ dp.include_router(start.router)
 dp.include_router(menu.router)
 dp.include_router(categories.router)
 dp.include_router(subgenres.router)
+dp.include_router(navigation.router)  # новый роутер для навигации
 
 async def main():
     """Главная функция запуска бота"""
