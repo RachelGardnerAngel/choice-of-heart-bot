@@ -33,7 +33,7 @@ dp.include_router(start.router)
 dp.include_router(menu.router)
 dp.include_router(categories.router)
 dp.include_router(subgenres.router)
-dp.include_router(navigation.router)  # новый роутер для навигации
+dp.include_router(navigation.router)
 
 async def main():
     """Главная функция запуска бота"""
@@ -43,7 +43,6 @@ async def main():
     logger.info(f"⏱️ Polling таймаут: {TELEGRAM_POLLING_TIMEOUT} сек")
     
     try:
-        # Запускаем бота
         await dp.start_polling(
             bot,
             allowed_updates=dp.resolve_used_update_types(),

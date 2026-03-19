@@ -5,17 +5,14 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from utils.texts import (
     CATEGORY_YAOI, CATEGORY_YURI, CATEGORY_GET,
     BUTTON_STATS, BUTTON_DIARY, BUTTON_SUBSCRIBE,
-    SUBGENRE_BUTTON_YAOI, SUBGENRE_BUTTON_YURI, SUBGENRE_BUTTON_GET,
-    BACK_BUTTON
+    BACK_BUTTON, GENDER_FEMALE, GENDER_MALE,
+    SUBGENRES_YAOI, SUBGENRES_YURI, SUBGENRES_GET_FEMALE, SUBGENRES_GET_MALE
 )
 
 def get_main_keyboard() -> ReplyKeyboardMarkup:
-    """
-    Создает главную клавиатуру с категориями и меню
-    """
+    """Главная клавиатура с категориями и меню"""
     builder = ReplyKeyboardBuilder()
     
-    # Добавляем кнопки категорий (в один ряд)
     builder.row(
         KeyboardButton(text=CATEGORY_YAOI),
         KeyboardButton(text=CATEGORY_YURI),
@@ -23,55 +20,86 @@ def get_main_keyboard() -> ReplyKeyboardMarkup:
         width=3
     )
     
-    # Добавляем кнопки меню (каждая на новой строке)
     builder.row(KeyboardButton(text=BUTTON_STATS))
     builder.row(KeyboardButton(text=BUTTON_DIARY))
     builder.row(KeyboardButton(text=BUTTON_SUBSCRIBE))
     
-    keyboard = builder.as_markup(
+    return builder.as_markup(
         resize_keyboard=True,
         input_field_placeholder="Выбери категорию или открой меню..."
     )
-    
-    return keyboard
 
 def get_category_keyboard(category: str) -> ReplyKeyboardMarkup:
-    """
-    Создает клавиатуру для конкретной категории:
-    - кнопка к поджанрам
-    - кнопка назад в главное меню
-    """
+    """Клавиатура для категории (кнопка поджанров + назад)"""
     builder = ReplyKeyboardBuilder()
     
-    # Добавляем кнопку поджанров в зависимости от категории
     if category == "yaoi":
+        from utils.texts import SUBGENRE_BUTTON_YAOI
         builder.row(KeyboardButton(text=SUBGENRE_BUTTON_YAOI))
     elif category == "yuri":
+        from utils.texts import SUBGENRE_BUTTON_YURI
         builder.row(KeyboardButton(text=SUBGENRE_BUTTON_YURI))
     elif category == "get":
-        builder.row(KeyboardButton(text=SUBGENRE_BUTTON_GET))
+        # Для Гет показываем кнопки выбора пола
+        builder.row(
+            KeyboardButton(text=GENDER_FEMALE),
+            KeyboardButton(text=GENDER_MALE),
+            width=2
+        )
     
-    # Добавляем кнопку назад
     builder.row(KeyboardButton(text=BACK_BUTTON))
     
-    keyboard = builder.as_markup(
+    return builder.as_markup(
         resize_keyboard=True,
-        input_field_placeholder="Выбери поджанр или вернись назад..."
+        input_field_placeholder="Сделай выбор..."
     )
+
+def get_gender_keyboard() -> ReplyKeyboardMarkup:
+    """Клавиатура только для выбора пола (после возврата)"""
+    builder = ReplyKeyboardBuilder()
     
-    return keyboard
+    builder.row(
+        KeyboardButton(text=GENDER_FEMALE),
+        KeyboardButton(text=GENDER_MALE),
+        width=2
+    )
+    builder.row(KeyboardButton(text=BACK_BUTTON))
+    
+    return builder.as_markup(
+        resize_keyboard=True,
+        input_field_placeholder="Выбери пол ГГ..."
+    )
+
+def get_subgenre_keyboard(category: str, gender: str = None) -> ReplyKeyboardMarkup:
+    """Клавиатура с поджанрами для конкретной категории и пола"""
+    builder = ReplyKeyboardBuilder()
+    
+    if category == "yaoi":
+        for subgenre in SUBGENRES_YAOI:
+            builder.row(KeyboardButton(text=subgenre))
+    elif category == "yuri":
+        for subgenre in SUBGENRES_YURI:
+            builder.row(KeyboardButton(text=subgenre))
+    elif category == "get" and gender == "female":
+        for subgenre in SUBGENRES_GET_FEMALE:
+            builder.row(KeyboardButton(text=subgenre))
+    elif category == "get" and gender == "male":
+        for subgenre in SUBGENRES_GET_MALE:
+            builder.row(KeyboardButton(text=subgenre))
+    
+    builder.row(KeyboardButton(text=BACK_BUTTON))
+    
+    return builder.as_markup(
+        resize_keyboard=True,
+        input_field_placeholder="Выбери жанр..."
+    )
 
 def get_back_only_keyboard() -> ReplyKeyboardMarkup:
-    """
-    Создает клавиатуру только с кнопкой "Назад"
-    Используется в поджанрах
-    """
+    """Клавиатура только с кнопкой назад"""
     builder = ReplyKeyboardBuilder()
     builder.row(KeyboardButton(text=BACK_BUTTON))
     
-    keyboard = builder.as_markup(
+    return builder.as_markup(
         resize_keyboard=True,
         input_field_placeholder="Вернуться назад..."
     )
-    
-    return keyboard
