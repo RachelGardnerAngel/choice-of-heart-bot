@@ -64,6 +64,10 @@ GENDER_CHOICE_BACK_MESSAGE = """
 GENDER_FEMALE = "👩‍🦰 ГГ — девушка"
 GENDER_MALE = "👨 ГГ — парень"
 
+# Кнопки для перехода к поджанрам (в категориях)
+SUBGENRE_BUTTON_YAOI = "📚 К поджанрам Яой"
+SUBGENRE_BUTTON_YURI = "📚 К поджанрам Юри"
+
 # Описания разделов поджанров
 SUBGENRE_INTRO_YAOI = """
 ⚔️ <b>В глубинах мужской любви</b>
