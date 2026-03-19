@@ -60,3 +60,18 @@ def get_category_keyboard(category: str) -> ReplyKeyboardMarkup:
     )
     
     return keyboard
+
+def get_back_only_keyboard() -> ReplyKeyboardMarkup:
+    """
+    Создает клавиатуру только с кнопкой "Назад"
+    Используется в поджанрах
+    """
+    builder = ReplyKeyboardBuilder()
+    builder.row(KeyboardButton(text=BACK_BUTTON))
+    
+    keyboard = builder.as_markup(
+        resize_keyboard=True,
+        input_field_placeholder="Вернуться назад..."
+    )
+    
+    return keyboard

@@ -4,9 +4,9 @@ from aiogram.types import Message
 
 from utils.texts import (
     SUBGENRE_BUTTON_YAOI, SUBGENRE_BUTTON_YURI, SUBGENRE_BUTTON_GET,
-    SUBGENRE_PLACEHOLDER, BACK_BUTTON
+    SUBGENRE_PLACEHOLDER
 )
-from keyboards.reply_kb import get_category_keyboard  # возвращаем в категорию, а не в главное меню
+from keyboards.reply_kb import get_back_only_keyboard  # новая функция для клавиатуры только с "Назад"
 from utils.logger import logger
 
 router = Router()
@@ -19,7 +19,7 @@ async def show_yaoi_subgenres(message: Message):
     
     await message.answer(
         text=SUBGENRE_PLACEHOLDER,
-        reply_markup=get_category_keyboard("yaoi"),  # возвращаем в категорию Яой, а не в главное меню
+        reply_markup=get_back_only_keyboard(),  # Только кнопка "Назад"!
         parse_mode="HTML"
     )
 
@@ -31,7 +31,7 @@ async def show_yuri_subgenres(message: Message):
     
     await message.answer(
         text=SUBGENRE_PLACEHOLDER,
-        reply_markup=get_category_keyboard("yuri"),  # возвращаем в категорию Юри
+        reply_markup=get_back_only_keyboard(),  # Только кнопка "Назад"!
         parse_mode="HTML"
     )
 
@@ -43,6 +43,6 @@ async def show_get_subgenres(message: Message):
     
     await message.answer(
         text=SUBGENRE_PLACEHOLDER,
-        reply_markup=get_category_keyboard("get"),  # возвращаем в категорию Гет
+        reply_markup=get_back_only_keyboard(),  # Только кнопка "Назад"!
         parse_mode="HTML"
     )
