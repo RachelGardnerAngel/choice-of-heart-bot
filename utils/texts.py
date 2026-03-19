@@ -95,3 +95,8 @@ SUBGENRE_PLACEHOLDER = """
 
 # Путь к картинке для приветствия
 WELCOME_IMAGE_PATH = "images/welcome.png"
+
+# Пути к картинкам для категорий
+CATEGORY_YAOI_IMAGE = "images/category_yaoi.png"
+CATEGORY_YURI_IMAGE = "images/category_yuri.png"
+CATEGORY_GET_IMAGE = "images/category_get.png"
