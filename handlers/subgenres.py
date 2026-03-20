@@ -10,7 +10,10 @@ from utils.texts import (
     GENDER_CHOICE_MESSAGE, GENDER_CHOICE_BACK_MESSAGE,
     SUBGENRES_YAOI, SUBGENRES_YURI,
     SUBGENRES_GET_FEMALE, SUBGENRES_GET_MALE,
-    BACK_BUTTON, SUBGENRE_PLACEHOLDER
+    BACK_BUTTON, SUBGENRE_PLACEHOLDER,
+    # Импорты для Фэнтези (чтобы исключить их из обработки)
+    SUBGENRE_YAOI_FANTASY, SUBGENRE_YURI_FANTASY,
+    SUBGENRE_GET_FEMALE_FANTASY, SUBGENRE_GET_MALE_FANTASY
 )
 from keyboards.reply_kb import (
     get_subgenre_keyboard, get_gender_keyboard,
@@ -21,11 +24,6 @@ from utils.logger import logger
 router = Router()
 
 # Хранилище для состояния пользователя
-# "gender" - на экране выбора пола
-# "subgenre_female" - в поджанрах (девушка)
-# "subgenre_male" - в поджанрах (парень)
-# "yaoi" - в поджанрах яой
-# "yuri" - в поджанрах юри
 user_state = {}
 
 # ===== ЯОЙ =====
@@ -80,8 +78,8 @@ async def choose_male(message: Message):
     )
 
 # ===== ОБРАБОТКА ПОДЖАНРОВ =====
-# Яой
-@router.message(F.text.in_(SUBGENRES_YAOI))
+# Яой — исключаем Фэнтези
+@router.message(F.text.in_(SUBGENRES_YAOI) & ~F.text.in_([SUBGENRE_YAOI_FANTASY]))
 async def handle_yaoi_subgenre(message: Message):
     user_id = message.from_user.id
     subgenre = message.text
@@ -93,8 +91,8 @@ async def handle_yaoi_subgenre(message: Message):
         parse_mode="HTML"
     )
 
-# Юри
-@router.message(F.text.in_(SUBGENRES_YURI))
+# Юри — исключаем Фэнтези
+@router.message(F.text.in_(SUBGENRES_YURI) & ~F.text.in_([SUBGENRE_YURI_FANTASY]))
 async def handle_yuri_subgenre(message: Message):
     user_id = message.from_user.id
     subgenre = message.text
@@ -106,8 +104,8 @@ async def handle_yuri_subgenre(message: Message):
         parse_mode="HTML"
     )
 
-# Гет (девушка)
-@router.message(F.text.in_(SUBGENRES_GET_FEMALE))
+# Гет (девушка) — исключаем Фэнтези
+@router.message(F.text.in_(SUBGENRES_GET_FEMALE) & ~F.text.in_([SUBGENRE_GET_FEMALE_FANTASY]))
 async def handle_get_female_subgenre(message: Message):
     user_id = message.from_user.id
     subgenre = message.text
@@ -119,8 +117,8 @@ async def handle_get_female_subgenre(message: Message):
         parse_mode="HTML"
     )
 
-# Гет (парень)
-@router.message(F.text.in_(SUBGENRES_GET_MALE))
+# Гет (парень) — исключаем Фэнтези
+@router.message(F.text.in_(SUBGENRES_GET_MALE) & ~F.text.in_([SUBGENRE_GET_MALE_FANTASY]))
 async def handle_get_male_subgenre(message: Message):
     user_id = message.from_user.id
     subgenre = message.text
@@ -140,36 +138,30 @@ async def handle_back(message: Message):
     
     logger.info(f"Пользователь {user_id} нажал Назад. Состояние: {state}")
     
-    # В зависимости от состояния ведём в нужное место
     if state == "gender":
-        # С экрана выбора пола - в главное меню
         from handlers.navigation import go_back
         await go_back(message)
         
     elif state == "subgenre_female":
-        # Из поджанров (девушка) - обратно к выбору пола
         await message.answer(
             text=GENDER_CHOICE_BACK_MESSAGE,
             reply_markup=get_gender_keyboard(),
             parse_mode="HTML"
         )
-        user_state[user_id] = "gender"  # меняем состояние
+        user_state[user_id] = "gender"
         
     elif state == "subgenre_male":
-        # Из поджанров (парень) - обратно к выбору пола
         await message.answer(
             text=GENDER_CHOICE_BACK_MESSAGE,
             reply_markup=get_gender_keyboard(),
             parse_mode="HTML"
         )
-        user_state[user_id] = "gender"  # меняем состояние
+        user_state[user_id] = "gender"
         
     elif state in ["yaoi", "yuri"]:
-        # Из поджанров яой/юри - в главное меню
         from handlers.navigation import go_back
         await go_back(message)
         
     else:
-        # Если состояние неизвестно - просто в главное
         from handlers.navigation import go_back
         await go_back(message)
