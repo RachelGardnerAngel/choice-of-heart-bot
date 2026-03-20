@@ -18,7 +18,7 @@ from utils.logger import logger
 time.sleep(7)
 
 # Подключаем все обработчики
-from handlers import start, menu, categories, subgenres, navigation, fantasy
+from handlers import start, menu, categories, subgenres, fantasy, navigation
 
 # Создаем объекты бота и диспетчера
 bot = Bot(
@@ -28,13 +28,14 @@ bot = Bot(
 )
 dp = Dispatcher()
 
-# Подключаем роутеры
+# Подключаем роутеры в правильном порядке!
+# Важно: fantasy ДО navigation, чтобы кнопка "Назад" сначала обрабатывалась в fantasy
 dp.include_router(start.router)
 dp.include_router(menu.router)
 dp.include_router(categories.router)
 dp.include_router(subgenres.router)
-dp.include_router(navigation.router)
-dp.include_router(fantasy.router)
+dp.include_router(fantasy.router)   # ← fantasy ДО navigation
+dp.include_router(navigation.router)  # ← navigation ПОСЛЕ fantasy
 
 async def main():
     """Главная функция запуска бота"""
