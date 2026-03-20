@@ -103,3 +103,56 @@ def get_back_only_keyboard() -> ReplyKeyboardMarkup:
         resize_keyboard=True,
         input_field_placeholder="Вернуться назад..."
     )
+
+def get_fantasy_keyboard(category: str) -> ReplyKeyboardMarkup:
+    """
+    Клавиатура с сеттингами для Фэнтези
+    """
+    from utils.texts import (
+        SETTING_YAOI_1, SETTING_YAOI_2, SETTING_YAOI_3,
+        SETTING_YAOI_4, SETTING_YAOI_5, SETTING_YAOI_6,
+        SETTING_YURI_1, SETTING_YURI_2, SETTING_YURI_3,
+        SETTING_YURI_4, SETTING_YURI_5, SETTING_YURI_6,
+        SETTING_GET_FEMALE_1, SETTING_GET_FEMALE_2, SETTING_GET_FEMALE_3,
+        SETTING_GET_FEMALE_4, SETTING_GET_FEMALE_5, SETTING_GET_FEMALE_6,
+        SETTING_GET_MALE_1, SETTING_GET_MALE_2, SETTING_GET_MALE_3,
+        SETTING_GET_MALE_4, SETTING_GET_MALE_5, SETTING_GET_MALE_6
+    )
+    
+    builder = ReplyKeyboardBuilder()
+    
+    if category == "yaoi":
+        builder.row(KeyboardButton(text=SETTING_YAOI_1))
+        builder.row(KeyboardButton(text=SETTING_YAOI_2))
+        builder.row(KeyboardButton(text=SETTING_YAOI_3))
+        builder.row(KeyboardButton(text=SETTING_YAOI_4))
+        builder.row(KeyboardButton(text=SETTING_YAOI_5))
+        builder.row(KeyboardButton(text=SETTING_YAOI_6))
+    elif category == "yuri":
+        builder.row(KeyboardButton(text=SETTING_YURI_1))
+        builder.row(KeyboardButton(text=SETTING_YURI_2))
+        builder.row(KeyboardButton(text=SETTING_YURI_3))
+        builder.row(KeyboardButton(text=SETTING_YURI_4))
+        builder.row(KeyboardButton(text=SETTING_YURI_5))
+        builder.row(KeyboardButton(text=SETTING_YURI_6))
+    elif category == "get_female":
+        builder.row(KeyboardButton(text=SETTING_GET_FEMALE_1))
+        builder.row(KeyboardButton(text=SETTING_GET_FEMALE_2))
+        builder.row(KeyboardButton(text=SETTING_GET_FEMALE_3))
+        builder.row(KeyboardButton(text=SETTING_GET_FEMALE_4))
+        builder.row(KeyboardButton(text=SETTING_GET_FEMALE_5))
+        builder.row(KeyboardButton(text=SETTING_GET_FEMALE_6))
+    elif category == "get_male":
+        builder.row(KeyboardButton(text=SETTING_GET_MALE_1))
+        builder.row(KeyboardButton(text=SETTING_GET_MALE_2))
+        builder.row(KeyboardButton(text=SETTING_GET_MALE_3))
+        builder.row(KeyboardButton(text=SETTING_GET_MALE_4))
+        builder.row(KeyboardButton(text=SETTING_GET_MALE_5))
+        builder.row(KeyboardButton(text=SETTING_GET_MALE_6))
+    
+    builder.row(KeyboardButton(text=BACK_BUTTON))
+    
+    return builder.as_markup(
+        resize_keyboard=True,
+        input_field_placeholder="Выбери сеттинг..."
+    )
