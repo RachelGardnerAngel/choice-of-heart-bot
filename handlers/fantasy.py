@@ -29,12 +29,10 @@ from utils.logger import logger
 router = Router()
 
 # Хранилище для состояния пользователя в Фэнтези
-# Ключ: user_id
-# Значение: словарь с информацией, откуда пришёл
 user_fantasy_state = {}
 
 # ========== ФУНКЦИЯ ДЛЯ ВОЗВРАТА В ПОДЖАНРЫ ==========
-async def back_to_subgenres(message: Message, category: str, gender: str = None):
+async def back_to_subgenres(message: Message, category: str):
     """Возвращает пользователя обратно в меню поджанров"""
     user_id = message.from_user.id
     
@@ -45,7 +43,6 @@ async def back_to_subgenres(message: Message, category: str, gender: str = None)
         from handlers.subgenres import show_yuri_subgenres
         await show_yuri_subgenres(message)
     elif category == "get_female":
-        # Для Гет девушка — возвращаем в поджанры (уже с выбранным полом)
         from utils.texts import SUBGENRE_INTRO_GET_FEMALE
         await message.answer(
             text=SUBGENRE_INTRO_GET_FEMALE,
@@ -70,10 +67,9 @@ async def show_fantasy_yaoi(message: Message):
     user_id = message.from_user.id
     logger.info(f"Пользователь {user_id} открыл Фэнтези в Яое")
     
-    # Запоминаем, откуда пришли
     user_fantasy_state[user_id] = {
         "category": "yaoi",
-        "level": "settings_list"  # сейчас на экране списка сеттингов
+        "level": "settings_list"
     }
     
     await message.answer(
@@ -238,7 +234,6 @@ async def send_setting(message: Message, description: str, category: str, settin
     user_id = message.from_user.id
     logger.info(f"Пользователь {user_id} открыл сеттинг {setting_num} в {category}")
     
-    # Обновляем состояние — теперь на уровне описания сеттинга
     if user_id in user_fantasy_state:
         user_fantasy_state[user_id]["level"] = "setting_description"
         user_fantasy_state[user_id]["setting_num"] = setting_num
@@ -248,49 +243,3 @@ async def send_setting(message: Message, description: str, category: str, settin
         reply_markup=get_back_only_keyboard(),
         parse_mode="HTML"
     )
-
-# ========== ОБРАБОТКА КНОПКИ НАЗАД ==========
-@router.message(F.text == BACK_BUTTON)
-async def handle_back_in_fantasy(message: Message):
-    user_id = message.from_user.id
-    state = user_fantasy_state.get(user_id)
-    
-    if not state:
-        # Если не в Фэнтези, передаём дальше
-        return
-    
-    category = state.get("category")
-    level = state.get("level")
-    
-    logger.info(f"Пользователь {user_id} нажал Назад в Фэнтези. Уровень: {level}, категория: {category}")
-    
-    if level == "settings_list":
-        # На экране списка сеттингов — возвращаемся в поджанры
-        await back_to_subgenres(message, category)
-        
-    elif level == "setting_description":
-        # На экране описания сеттинга — возвращаемся к списку сеттингов
-        # Восстанавливаем клавиатуру с сеттингами
-        if category == "yaoi":
-            text = FANTASY_INTRO_YAOI
-            keyboard = get_fantasy_keyboard("yaoi")
-        elif category == "yuri":
-            text = FANTASY_INTRO_YURI
-            keyboard = get_fantasy_keyboard("yuri")
-        elif category == "get_female":
-            text = FANTASY_INTRO_GET_FEMALE
-            keyboard = get_fantasy_keyboard("get_female")
-        elif category == "get_male":
-            text = FANTASY_INTRO_GET_MALE
-            keyboard = get_fantasy_keyboard("get_male")
-        else:
-            return
-        
-        # Обновляем состояние
-        user_fantasy_state[user_id]["level"] = "settings_list"
-        
-        await message.answer(
-            text=text,
-            reply_markup=keyboard,
-            parse_mode="HTML"
-        )
